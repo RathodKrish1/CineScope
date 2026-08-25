@@ -1,21 +1,25 @@
 import TrendingMovie from "../components/TrendingMovie";
-import MovieGrid from '../components/MovieGrid';
+import TrendingSeries from "../components/TrendingSeries";
+import NewMovies from "../components/NewMovies";
 
 export default function Home(){
     return(
         <>
-            <div>
-                <div className="">
-                    Trending Shows
-                    <TrendingMovie />
+            <div className="mt-2">
+                <NewMovies />
+                <div className="grid grid-cols-2 divide-x divide-gray-400 mt-5 ">
+                    <div className="">
+                        Trending Movies
+                        <TrendingMovie />
+                    </div>
+                    <div>
+                        <h1>Trending Series</h1>
+                        <TrendingSeries />
+                    </div>
                 </div>
-                <div>
-                    <h1>Movies</h1>  
-                    <MovieGrid />
-                </div>
-                <div>
-                    <h1>Series</h1>
-                </div>
+
+                
+
             </div>
         </>
     )

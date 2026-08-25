@@ -8,15 +8,18 @@ import Recommendation from "./pages/Recommendation";
 export default function App(){
 	return(
 		<>
-			<BrowserRouter>
-				<Navbar />
-				<Routes>
-					<Route path="/" element={<Home />}/>
-					<Route path="/movies" element={<Movie />} />
-					<Route path="/series" element={<Series />} />
-					<Route path="/recommendation" element={<Recommendation />} />
-				</Routes>
-			</BrowserRouter>
+			<div className="flex flex-col mx-1 mt-1">
+				<BrowserRouter>
+					<Navbar />
+					
+					<Routes>
+						<Route path="/" element={<Home />}/>
+						<Route path="/movies" element={<Movie />} />
+						<Route path="/series" element={<Series />} />
+						<Route path="/recommendation" element={<Recommendation />} />
+					</Routes>
+				</BrowserRouter>
+			</div>
 		</>
 	)
 }

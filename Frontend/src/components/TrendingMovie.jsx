@@ -1,9 +1,9 @@
-import TrendingMovieCard from './TrendingMovieCard'
+import MovieGrid from './MovieGrid'
 
 export default function TrendingMovie(){
     return(
         <>
-            <TrendingMovieCard></TrendingMovieCard>
+            <MovieGrid />
         </>
     )
 }

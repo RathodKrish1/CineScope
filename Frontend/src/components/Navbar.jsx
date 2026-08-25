@@ -1,27 +1,58 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
+    const location = useLocation();
+
+    const isActive = (path) => location.pathname === path;
+
     return (
-        <nav className="sticky top-1 flex items-center border border-gray-400 rounded-2xl h-20 mx-1 mt-1">
+        <nav className="sticky top-2 z-50 flex items-center h-16 px-4 border border-white/10 rounded-2xl bg-black/80 backdrop-blur-xl shadow-2xl">
+
             <div className="flex-1 text-center">
-                <Link to="/">CineScope</Link>
+                <Link
+                    to="/"
+                    className="brand"
+                >
+                    CineScope
+                </Link>
             </div>
 
             <div className="flex-1 text-center">
-                <Link to="/search">Search</Link>
+                <Link
+                    to="/search"
+                    className={`nav-link ${isActive("/search") ? "text-white" : ""}`}
+                >
+                    Search
+                </Link>
             </div>
 
             <div className="flex-1 text-center">
-                <Link to="/movies">Movies</Link>
+                <Link
+                    to="/movies"
+                    className={`nav-link ${isActive("/movies") ? "text-white" : ""}`}
+                >
+                    Movies
+                </Link>
             </div>
 
             <div className="flex-1 text-center">
-                <Link to="/series">Series</Link>
+                <Link
+                    to="/series"
+                    className={`nav-link ${isActive("/series") ? "text-white" : ""}`}
+                >
+                    Series
+                </Link>
             </div>
 
             <div className="flex-1 text-center">
-                <Link to="/recommendation">Recommended Shows</Link>
+                <Link
+                    to="/recommendation"
+                    className={`nav-link ${isActive("/recommendation") ? "text-white" : ""}`}
+                >
+                    Recommended Shows
+                </Link>
             </div>
+
         </nav>
     );
 }
