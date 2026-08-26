@@ -9,6 +9,14 @@ export const getLatestMovies = async () => {
     }
     return await response.json();
 };
+//Trending Movie https://api.themoviedb.org/3/trending/movie/{time_window}
+export const getTrendingMovies = async (time)=>{
+    const response = await fetch(`${process.env.TMDB_BASE_URL}/trending/movie/${time}?api_key=${process.env.TMDB_API_KEY}`);
+    if(!response.ok){
+        throw new Error("Failed to Fetch Popular Movies");
+    }
+    return await response.json();
+}
 
 //Popular Movie
 export const getPopularMovies = async () => {
@@ -20,7 +28,27 @@ export const getPopularMovies = async () => {
     }
     return await response.json();
 };
+//Top Rated Movies
+export const getTopRatedMovies = async () => {
+    const response = await fetch(
+        `${process.env.TMDB_BASE_URL}/movie/top_rated?api_key=${process.env.TMDB_API_KEY}`
+    );
+    if (!response.ok) {
+        throw new Error("Failed to fetch popular movies from TMDB");
+    }
+    return await response.json();
+};
 
+//Filter Movie 
+export const getFilterMovie = async () => {
+    const response = await fetch(
+        `${process.env.TMDB_BASE_URL}/genre/movie/list?api_key=${process.env.TMDB_API_KEY}`
+    );
+    if (!response.ok) {
+        throw new Error("Failed to fetch latest movies from TMDB");
+    }
+    return await response.json();
+};
 
 
 //Series URLs
@@ -33,15 +61,32 @@ export const getPopularSeries = async ()=>{
     }
     return await response.json();
 }
-
-//Trending 
-export const getTrendingSeries = async ()=>{
-    const response = await fetch(`${process.env.TMDB_BASE_URL}/tv/on_the_air?api_key=${process.env.TMDB_API_KEY}`);
+//Top Rated Series
+export const getTopRatedSeries = async ()=>{
+    const response = await fetch(`${process.env.TMDB_BASE_URL}/tv/top_rated?api_key=${process.env.TMDB_API_KEY}`);
     if(!response.ok){
         throw new Error("Failed to Fetch Popular Series");
     }
     return await response.json();
 }
+//Trending 
+export const getTrendingSeries = async (time)=>{
+    const response = await fetch(`${process.env.TMDB_BASE_URL}/trending/tv/${time}?api_key=${process.env.TMDB_API_KEY}`);
+    if(!response.ok){
+        throw new Error("Failed to Fetch Popular Series");
+    }
+    return await response.json();
+}
+//Filter Series 
+export const getFilterSeries = async () => {
+    const response = await fetch(
+        `${process.env.TMDB_BASE_URL}/genre/tv/list?api_key=${process.env.TMDB_API_KEY}`
+    );
+    if (!response.ok) {
+        throw new Error("Failed to fetch latest movies from TMDB");
+    }
+    return await response.json();
+};
 
 // Search Both Show
 export const getSearchMovie = async (query)=>{

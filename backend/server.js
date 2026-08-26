@@ -6,8 +6,8 @@ dotenv.config();
 
 const app = express();
 
-app.use("/api/movies", movieRoutes);
-app.use("/api/series",seriesRoutes);
+app.use("/showtime/movies", movieRoutes);
+app.use("/showtime/series",seriesRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

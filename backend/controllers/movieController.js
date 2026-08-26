@@ -1,4 +1,4 @@
-import { getLatestMovies,getPopularMovies,getSearchMovie } from "../services/CinescopeService.js";
+import { getLatestMovies,getPopularMovies,getSearchMovie,getFilterMovie,getTopRatedMovies,getTrendingMovies } from "../services/CinescopeService.js";
 
 
 //Movies Part
@@ -28,6 +28,44 @@ export const popularMovie = (req,res)=>{
   })
 }
 
+export const topRatedMovie = (req,res)=>{
+  getTopRatedMovies()
+  .then((data)=>{
+    res.json(data)
+  })
+  .catch((err)=>{
+    res.status(500).json({
+      message: "Failed to fetch latest movies",
+      error: err.message,
+    });
+  })
+}
+
+export const filterMovie = (req,res)=>{
+  getFilterMovie()
+  .then((data)=>{
+    res.json(data);
+  })
+  .catch((err)=>{
+    res.status(500).json({
+      message: "Failed to fetch Filter Movie",
+      error: err.message,
+    })
+  })
+}
+
+export const trendingMovie = async (req,res)=>{
+  try{
+    const {time} = req.params;
+    const data = await getTrendingMovies(time);
+    res.json(data);
+  }catch(err){
+    res.status(500).json({
+      message:"Failed to fetch trending Movie ",
+      error: err.message,
+    })
+  }
+}
 // Search Both
 export const searchMovieAndSeries = async (req,res)=>{
   try{

@@ -1,8 +1,23 @@
 import TrendingMovie from "../components/TrendingMovie";
 import TrendingSeries from "../components/TrendingSeries";
 import NewMovies from "../components/NewMovies";
+import { getPopularMovies } from "../services/movieAPI";
+import { useEffect,useState } from "react";
 
 export default function Home(){
+    const [popularMovies,setPopularMovies] = useState([]);
+    useEffect(()=>{
+        const fetchMovies = async()=>{
+            try{
+                const data = await getPopularMovies();
+                console.log(data);
+                setPopularMovies(data);
+            }catch(error){
+                console.log(error);
+            }
+        }
+        fetchMovies();
+    },[])
     return(
         <>
             <div className="mt-2">
