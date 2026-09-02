@@ -39,3 +39,33 @@ export const getTopRatedMovies = async () => {
 
   return response.json();
 };
+
+export const getMovieDetails = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch movie details");
+  }
+
+  return response.json();
+};
+
+export const searchMovies = async (query, page = 1) => {
+  const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(query)}&page=${page}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to search movies");
+  }
+
+  return response.json();
+};
+
+export const getFilterMovie = async () => {
+  const response = await fetch(`${API_URL}/filter`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch movie filters/genres");
+  }
+
+  return response.json();
+};

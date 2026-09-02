@@ -10,13 +10,24 @@ export const getLatestMovies = async () => {
     return await response.json();
 };
 //Trending Movie https://api.themoviedb.org/3/trending/movie/{time_window}
-export const getTrendingMovies = async (time)=>{
+export const getTrendingMovies = async (time = "week")=>{
     const response = await fetch(`${process.env.TMDB_BASE_URL}/trending/movie/${time}?api_key=${process.env.TMDB_API_KEY}`);
     if(!response.ok){
         throw new Error("Failed to Fetch Popular Movies");
     }
     return await response.json();
 }
+
+//Single Movie Details, with streaming/rental/purchase availability
+export const getMovieDetails = async (id) => {
+    const response = await fetch(
+        `${process.env.TMDB_BASE_URL}/movie/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=watch/providers`
+    );
+    if (!response.ok) {
+        throw new Error("Failed to fetch movie details from TMDB");
+    }
+    return await response.json();
+};
 
 //Popular Movie
 export const getPopularMovies = async () => {

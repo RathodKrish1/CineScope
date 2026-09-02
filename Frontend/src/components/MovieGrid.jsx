@@ -1,46 +1,19 @@
 import MovieCard from "./MovieCard"
-import { useState } from "react";
 
-const data = [
-    {
-        id:1,
-        src:"https://tse2.mm.bing.net/th/id/OIP.zjX0voB9Jimzyxlz-ch0fgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
-        name:"Spider-Man",
-        description:"This is Spider-Man Movie."
-    },
-    {
-        id:2,
-        src:"https://tse2.mm.bing.net/th/id/OIP.zjX0voB9Jimzyxlz-ch0fgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
-        name:"Spider-Man",
-        description:"This is Spider-Man Movie."
-    },{
-        id:3,
-        src:"https://tse2.mm.bing.net/th/id/OIP.zjX0voB9Jimzyxlz-ch0fgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
-        name:"Spider-Man",
-        description:"This is Spider-Man Movie."
-    },{
-        id:2,
-        src:"https://tse2.mm.bing.net/th/id/OIP.zjX0voB9Jimzyxlz-ch0fgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
-        name:"Spider-Man",
-        description:"This is Spider-Man Movie."
-    },{
-        id:2,
-        src:"https://tse2.mm.bing.net/th/id/OIP.zjX0voB9Jimzyxlz-ch0fgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
-        name:"Spider-Man",
-        description:"This is Spider-Man Movie."
+export default function MovieGrid({ movies = [] }) {
+    if (!movies.length) {
+        return (
+            <p className="py-8 text-center text-sm text-neutral-500">
+                No movies to show right now.
+            </p>
+        );
     }
-]
-export default function MovieGrid(){
-    const [movies,setMovie] = useState(data);  
-    return(
-        <>
-            <div className="grid grid-cols-2 justify-items-center">
-                {
-                    movies.map(movie=>(
-                        <MovieCard movie={movie}/>
-                    ))
-                }        
-            </div>
-        </>
-    )
+
+    return (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            {movies.map((movie, index) => (
+                <MovieCard key={movie.id} movie={movie} index={index} />
+            ))}
+        </div>
+    );
 }

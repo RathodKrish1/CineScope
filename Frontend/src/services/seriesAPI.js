@@ -39,3 +39,13 @@ export const getFilteredSeries = async (params) => {
 
   return response.json();
 };
+
+export const searchSeries = async (query, page = 1) => {
+  const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(query)}&page=${page}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to search series");
+  }
+
+  return response.json();
+};
