@@ -1,19 +1,12 @@
-import MovieCard from "./MovieCard"
+import MovieCard from "./MovieCard";
 
-export default function MovieGrid({ movies = [] }) {
-    if (!movies.length) {
-        return (
-            <p className="py-8 text-center text-sm text-neutral-500">
-                No movies to show right now.
-            </p>
-        );
-    }
-
-    return (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-            {movies.map((movie, index) => (
-                <MovieCard key={movie.id} movie={movie} index={index} />
-            ))}
-        </div>
-    );
+export default function MovieGrid({ movies = [], className = "" }) {
+  if (!movies.length) return <div className="empty">Nothing to show right now.</div>;
+  return (
+    <div className={`grid ${className}`.trim()}>
+      {movies.map((item, index) => (
+        <MovieCard key={`${item.id}-${item.media_type || ""}-${index}`} movie={item} />
+      ))}
+    </div>
+  );
 }

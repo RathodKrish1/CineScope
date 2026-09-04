@@ -1,34 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect,useState } from "react";
 import MovieGrid from "./MovieGrid";
-import { getLatestMovies } from "../services/movieAPI";
-
-export default function NewMovies() {
-    const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let active = true;
-        getLatestMovies()
-            .then((data) => {
-                if (active) setMovies(data.results || []);
-            })
-            .catch((error) => console.error(error))
-            .finally(() => {
-                if (active) setLoading(false);
-            });
-        return () => {
-            active = false;
-        };
-    }, []);
-
-    return (
-        <section className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6">
-            <h2 className="mb-4 text-xl font-bold text-white">New Release Movies</h2>
-            {loading ? (
-                <p className="text-sm text-neutral-500">Loading...</p>
-            ) : (
-                <MovieGrid movies={movies.slice(0, 10)} />
-            )}
-        </section>
-    );
-}
+import { getPopularSeries } from "../services/seriesAPI";
+export default function NewMovies(){const[items,setItems]=useState([]);useEffect(()=>{getPopularSeries(1).then(d=>setItems(d.results||[])).catch(console.error)},[]);return <section className="section"><div className="section-head"><div><p className="section-eyebrow">Binge-worthy</p><h2 className="section-title">Popular Series</h2></div></div><div className="section-panel"><MovieGrid movies={items.slice(0,6)}/></div></section>}

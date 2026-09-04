@@ -1,119 +1,36 @@
-//Movies URLs
-//Recently on Theater
-export const getLatestMovies = async () => {
-    const response = await fetch(
-        `${process.env.TMDB_BASE_URL}/movie/now_playing?api_key=${process.env.TMDB_API_KEY}`
-    );
-    if (!response.ok) {
-        throw new Error("Failed to fetch latest movies from TMDB");
-    }
-    return await response.json();
-};
-//Trending Movie https://api.themoviedb.org/3/trending/movie/{time_window}
-export const getTrendingMovies = async (time = "week")=>{
-    const response = await fetch(`${process.env.TMDB_BASE_URL}/trending/movie/${time}?api_key=${process.env.TMDB_API_KEY}`);
-    if(!response.ok){
-        throw new Error("Failed to Fetch Popular Movies");
-    }
-    return await response.json();
-}
-
-//Single Movie Details, with streaming/rental/purchase availability
-export const getMovieDetails = async (id) => {
-    const response = await fetch(
-        `${process.env.TMDB_BASE_URL}/movie/${id}?api_key=${process.env.TMDB_API_KEY}&append_to_response=watch/providers`
-    );
-    if (!response.ok) {
-        throw new Error("Failed to fetch movie details from TMDB");
-    }
-    return await response.json();
+const tmdb = async (path, params = {}) => {
+  if (!process.env.TMDB_BASE_URL || !process.env.TMDB_API_KEY) throw new Error("TMDB_BASE_URL and TMDB_API_KEY are required");
+  const url = new URL(`${process.env.TMDB_BASE_URL}${path}`);
+  url.searchParams.set("api_key", process.env.TMDB_API_KEY);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, value);
+  });
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`TMDB request failed: ${response.status}`);
+  return response.json();
 };
 
-//Popular Movie
-export const getPopularMovies = async () => {
-    const response = await fetch(
-        `${process.env.TMDB_BASE_URL}/movie/popular?api_key=${process.env.TMDB_API_KEY}`
-    );
-    if (!response.ok) {
-        throw new Error("Failed to fetch popular movies from TMDB");
-    }
-    return await response.json();
-};
-//Top Rated Movies
-export const getTopRatedMovies = async () => {
-    const response = await fetch(
-        `${process.env.TMDB_BASE_URL}/movie/top_rated?api_key=${process.env.TMDB_API_KEY}`
-    );
-    if (!response.ok) {
-        throw new Error("Failed to fetch popular movies from TMDB");
-    }
-    return await response.json();
-};
+export const getLatestMovies = (page = 1) => tmdb("/movie/now_playing", { page });
+export const getTrendingMovies = (time = "week", page = 1) => tmdb(`/trending/movie/${time}`, { page });
+export const getMovieDetails = (id) => tmdb(`/movie/${id}`, { append_to_response: "watch/providers" });
+export const getPopularMovies = (page = 1) => tmdb("/movie/popular", { page });
+export const getTopRatedMovies = (page = 1) => tmdb("/movie/top_rated", { page });
+export const getFilterMovie = () => tmdb("/genre/movie/list");
+export const getDiscoverMovies = (params = {}) => tmdb("/discover/movie", params);
+export const getAnimeMovies = (page = 1, params = {}) =>
+  tmdb("/discover/movie", { with_genres: 16, sort_by: "popularity.desc", page, ...params });
 
-//Filter Movie 
-export const getFilterMovie = async () => {
-    const response = await fetch(
-        `${process.env.TMDB_BASE_URL}/genre/movie/list?api_key=${process.env.TMDB_API_KEY}`
-    );
-    if (!response.ok) {
-        throw new Error("Failed to fetch latest movies from TMDB");
-    }
-    return await response.json();
-};
+export const getSeriesDetails = (id) => tmdb(`/tv/${id}`, { append_to_response: "watch/providers" });
+export const getPopularSeries = (page = 1) => tmdb("/tv/popular", { page });
+export const getTopRatedSeries = (page = 1) => tmdb("/tv/top_rated", { page });
+export const getTrendingSeries = (time = "week", page = 1) => tmdb(`/trending/tv/${time}`, { page });
+export const getFilterSeries = () => tmdb("/genre/tv/list");
+export const getDiscoverSeries = (params = {}) => tmdb("/discover/tv", params);
+export const getAnimeSeries = (page = 1, params = {}) =>
+  tmdb("/discover/tv", { with_genres: 16, sort_by: "popularity.desc", page, ...params });
 
-
-//Series URLs
-
-//Popular 
-export const getPopularSeries = async ()=>{
-    const response = await fetch(`${process.env.TMDB_BASE_URL}/tv/popular?api_key=${process.env.TMDB_API_KEY}`);
-    if(!response.ok){
-        throw new Error("Failed to Fetch Popular Series");
-    }
-    return await response.json();
-}
-//Top Rated Series
-export const getTopRatedSeries = async ()=>{
-    const response = await fetch(`${process.env.TMDB_BASE_URL}/tv/top_rated?api_key=${process.env.TMDB_API_KEY}`);
-    if(!response.ok){
-        throw new Error("Failed to Fetch Popular Series");
-    }
-    return await response.json();
-}
-//Trending 
-export const getTrendingSeries = async (time)=>{
-    const response = await fetch(`${process.env.TMDB_BASE_URL}/trending/tv/${time}?api_key=${process.env.TMDB_API_KEY}`);
-    if(!response.ok){
-        throw new Error("Failed to Fetch Popular Series");
-    }
-    return await response.json();
-}
-//Filter Series 
-export const getFilterSeries = async () => {
-    const response = await fetch(
-        `${process.env.TMDB_BASE_URL}/genre/tv/list?api_key=${process.env.TMDB_API_KEY}`
-    );
-    if (!response.ok) {
-        throw new Error("Failed to fetch latest movies from TMDB");
-    }
-    return await response.json();
-};
-
-// Search Both Show
-export const getSearchMovie = async (query)=>{
-    const response = await fetch(`${process.env.TMDB_BASE_URL}/search/multi?api_key=${process.env.TMDB_API_KEY}&query=${encodeURIComponent(query)}`);
-    if (!response.ok) {
-        throw new Error("Failed to search");
-    }
-    const data = await response.json();
-    const filteredResults = data.results.filter(
-        (item) =>
-            item.media_type === "movie" ||
-            item.media_type === "tv"
-    );
-
-    return {
-        ...data,
-        result: filteredResults
-    };
-};
+export const getSearchMovie = (query, page = 1) =>
+  tmdb("/search/multi", { query, page }).then(data => ({
+    ...data,
+    results: (data.results || []).filter(item => item.media_type === "movie" || item.media_type === "tv")
+  }));

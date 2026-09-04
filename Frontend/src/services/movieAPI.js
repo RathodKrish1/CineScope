@@ -1,71 +1,32 @@
 const API_URL = "http://localhost:5000/showtime/movies";
 
-export const getPopularMovies = async () => {
-  const response = await fetch(`${API_URL}/popular`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch popular movies");
-  }
-
+async function request(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Request failed");
   return response.json();
-};
+}
 
-export const getLatestMovies = async () => {
-  const response = await fetch(`${API_URL}/latest`);
+export const getPopularMovies = (page = 1, params = {}) =>
+  request(`${API_URL}/popular?page=${page}&${new URLSearchParams(params)}`);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch latest movies");
-  }
+export const getLatestMovies = (page = 1) =>
+  request(`${API_URL}/latest?page=${page}`);
 
-  return response.json();
-};
+export const getTrendingMovies = (time = "week", page = 1) =>
+  request(`${API_URL}/trending/${time}?page=${page}`);
 
-export const getTrendingMovies = async () => {
-  const response = await fetch(`${API_URL}/trending`);
+export const getTopRatedMovies = (page = 1) =>
+  request(`${API_URL}/top_rated?page=${page}`);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch trending movies");
-  }
+export const getMovieDetails = (id) => request(`${API_URL}/${id}`);
 
-  return response.json();
-};
+export const searchMovies = (query, page = 1) =>
+  request(`${API_URL}/search?query=${encodeURIComponent(query)}&page=${page}`);
 
-export const getTopRatedMovies = async () => {
-  const response = await fetch(`${API_URL}/top_rated`);
+export const getFilterMovie = () => request(`${API_URL}/filter`);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch top rated movies");
-  }
+export const discoverMovies = (params = {}) =>
+  request(`${API_URL}/discover?${new URLSearchParams(params)}`);
 
-  return response.json();
-};
-
-export const getMovieDetails = async (id) => {
-  const response = await fetch(`${API_URL}/${id}`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch movie details");
-  }
-
-  return response.json();
-};
-
-export const searchMovies = async (query, page = 1) => {
-  const response = await fetch(`${API_URL}/search?query=${encodeURIComponent(query)}&page=${page}`);
-
-  if (!response.ok) {
-    throw new Error("Failed to search movies");
-  }
-
-  return response.json();
-};
-
-export const getFilterMovie = async () => {
-  const response = await fetch(`${API_URL}/filter`);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch movie filters/genres");
-  }
-
-  return response.json();
-};
+export const getAnimeMovies = (page = 1, params = {}) =>
+  request(`${API_URL}/anime?page=${page}&${new URLSearchParams(params)}`);
